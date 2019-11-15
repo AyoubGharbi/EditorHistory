@@ -15,8 +15,8 @@ public class EditorHistoryWindow : EditorWindow
             utility : false, "Editor History", focus : true);
     }
 
-    public GUISkin _hWindowSkin;
     public GUISkin _hInfoSkin;
+    public GUISkin _hWindowSkin;
 
     private EditorHistory _editorHistory = new EditorHistory ();
 
@@ -49,7 +49,7 @@ public class EditorHistoryWindow : EditorWindow
 
     private void OnSelectionChanged ()
     {
-        var activeObject = Selection.activeGameObject;
+        var activeObject = Selection.activeObject;
         if (activeObject == null) return;
 
         DrawHElement (activeObject);
@@ -73,21 +73,27 @@ public class EditorHistoryWindow : EditorWindow
             EditorGUILayout.EndHorizontal ();
             GUILayout.FlexibleSpace ();
         }
-
-        for (int h = 0; h < _editorHistory.HistorySize; h++)
+        else
         {
-            var hRect = EditorGUILayout.BeginHorizontal ();
-            var hObject = _editorHistory.HistoryElements[h];
-            var buttonStyle = _hWindowSkin.GetStyle ("InteractableButton");
+            for (int h = 0; h < _editorHistory.HistorySize; h++)
+            {
+                var hRect = EditorGUILayout.BeginHorizontal ();
+                var hObject = _editorHistory.HistoryElements[h];
+                var hButtonStyle = _hWindowSkin.GetStyle ("InteractableButton");
 
-            if (IsClickingRect (hRect)) // ping it and remove it from the history list (just for testing atm)
-                RemoveHElement (hObject);
+                if (IsClickingRect (hRect)) // ping it and remove it from the history list (just for testing atm)
+                    RemoveHElement (hObject);
 
-            GUILayout.Label (hObject.name, buttonStyle);
+                GUIContent hContent = new GUIContent ();
+                hContent.image = AssetPreview.GetMiniThumbnail (hObject);
+                hContent.text = hObject.name;
 
-            GUILayout.EndHorizontal ();
+                GUILayout.Label (hContent, hButtonStyle);
 
-            GUILayout.Space (15);
+                GUILayout.EndHorizontal ();
+
+                GUILayout.Space (15);
+            }
         }
     }
 
@@ -100,8 +106,8 @@ public class EditorHistoryWindow : EditorWindow
     void RemoveHElement (UnityEngine.Object hObject)
     {
         EditorGUIUtility.PingObject (hObject);
-        _editorHistory.RemovehEelement (hObject);
-        Repaint (); // force repaint
+        // _editorHistory.RemovehEelement (hObject);
+        // Repaint (); // force repaint
     }
 
     bool IsClickingRect (Rect rect)
@@ -112,7 +118,6 @@ public class EditorHistoryWindow : EditorWindow
         {
             case EventType.MouseDown:
                 return rect.Contains (currentEvent.mousePosition);
-
         }
 
         return false;

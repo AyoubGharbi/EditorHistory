@@ -4,3 +4,9 @@ Being able to see your previous history actions in Unity Editor! (Work In Progre
 * Fonts Used 
   - Cascadia Code :
     https://github.com/microsoft/cascadia-code
+
+
+
+* EditorHistory Preview
+
+    ![](preview.png)
