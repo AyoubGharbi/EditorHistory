@@ -17,17 +17,20 @@ public class EditorHistoryWindow : EditorWindow
 
     public GUISkin _hWindowSkin;
 
-    private bool _isInitialized = false;
     private EditorHistory _editorHistory = new EditorHistory ();
+
+    void OnEnable ()
+    {
+            Selection.selectionChanged += OnSelectionChanged;
+    }
+
+    void OnDisable ()
+    {
+            Selection.selectionChanged -= OnSelectionChanged;
+    }
 
     void OnGUI ()
     {
-        if (!_isInitialized)
-        {
-            Selection.selectionChanged += OnSelectionChanged;
-            _isInitialized = true;
-        }
-
         EditorGUILayout.BeginHorizontal ();
 
         GUILayout.Space (15);
