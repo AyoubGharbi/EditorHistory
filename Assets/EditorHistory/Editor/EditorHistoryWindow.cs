@@ -21,12 +21,12 @@ public class EditorHistoryWindow : EditorWindow
 
     void OnEnable ()
     {
-            Selection.selectionChanged += OnSelectionChanged;
+        Selection.selectionChanged += OnSelectionChanged;
     }
 
     void OnDisable ()
     {
-            Selection.selectionChanged -= OnSelectionChanged;
+        Selection.selectionChanged -= OnSelectionChanged;
     }
 
     void OnGUI ()
@@ -59,10 +59,16 @@ public class EditorHistoryWindow : EditorWindow
     {
         for (int h = 0; h < _editorHistory.HistorySize; h++)
         {
-            Debug.Log ("Draw!");
+            var hRect = EditorGUILayout.BeginHorizontal ();
             var hObject = _editorHistory.HistoryElements[h];
             var buttonStyle = _hWindowSkin.GetStyle ("InteractableButton");
+
             GUILayout.Label (hObject.name, buttonStyle);
+
+            if (IsClickingRect (hRect))
+                EditorGUIUtility.PingObject (hObject);
+
+            GUILayout.EndHorizontal ();
 
             GUILayout.Space (15);
         }
@@ -71,5 +77,19 @@ public class EditorHistoryWindow : EditorWindow
     void DrawHElement (UnityEngine.Object hObject)
     {
         _editorHistory.AddhEelement (hObject);
+    }
+
+    bool IsClickingRect (Rect rect)
+    {
+        var currentEvent = Event.current;
+
+        switch (currentEvent.type)
+        {
+            case EventType.MouseDown:
+                return rect.Contains (currentEvent.mousePosition);
+
+        }
+
+        return false;
     }
 }
