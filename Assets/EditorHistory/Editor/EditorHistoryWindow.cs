@@ -16,6 +16,7 @@ public class EditorHistoryWindow : EditorWindow
     }
 
     public GUISkin _hWindowSkin;
+    public GUISkin _hInfoSkin;
 
     private EditorHistory _editorHistory = new EditorHistory ();
 
@@ -44,7 +45,6 @@ public class EditorHistoryWindow : EditorWindow
         GUILayout.Space (15);
 
         EditorGUILayout.EndHorizontal ();
-
     }
 
     private void OnSelectionChanged ()
@@ -53,20 +53,37 @@ public class EditorHistoryWindow : EditorWindow
         if (activeObject == null) return;
 
         DrawHElement (activeObject);
+
+        Repaint ();
     }
 
     void DrawHistory ()
     {
+        // no history
+        if (_editorHistory.HistorySize <= 0)
+        {
+            var infoStyle = _hInfoSkin.GetStyle ("Infos");
+            GUILayout.FlexibleSpace ();
+            EditorGUILayout.BeginHorizontal ();
+            GUILayout.FlexibleSpace ();
+
+            GUILayout.Label ("No History!", infoStyle);
+
+            GUILayout.FlexibleSpace ();
+            EditorGUILayout.EndHorizontal ();
+            GUILayout.FlexibleSpace ();
+        }
+
         for (int h = 0; h < _editorHistory.HistorySize; h++)
         {
             var hRect = EditorGUILayout.BeginHorizontal ();
             var hObject = _editorHistory.HistoryElements[h];
             var buttonStyle = _hWindowSkin.GetStyle ("InteractableButton");
 
-            GUILayout.Label (hObject.name, buttonStyle);
+            if (IsClickingRect (hRect)) // ping it and remove it from the history list (just for testing atm)
+                RemoveHElement (hObject);
 
-            if (IsClickingRect (hRect))
-                EditorGUIUtility.PingObject (hObject);
+            GUILayout.Label (hObject.name, buttonStyle);
 
             GUILayout.EndHorizontal ();
 
@@ -77,6 +94,14 @@ public class EditorHistoryWindow : EditorWindow
     void DrawHElement (UnityEngine.Object hObject)
     {
         _editorHistory.AddhEelement (hObject);
+        Repaint (); // force repaint
+    }
+
+    void RemoveHElement (UnityEngine.Object hObject)
+    {
+        EditorGUIUtility.PingObject (hObject);
+        _editorHistory.RemovehEelement (hObject);
+        Repaint (); // force repaint
     }
 
     bool IsClickingRect (Rect rect)

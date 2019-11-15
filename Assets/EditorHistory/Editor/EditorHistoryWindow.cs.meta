@@ -6,6 +6,7 @@ MonoImporter:
   defaultReferences:
   - m_ViewDataDictionary: {instanceID: 0}
   - _hWindowSkin: {fileID: 11400000, guid: ceedb19bbafd5954e8455ee9a8fdd802, type: 2}
+  - _hInfoSkin: {fileID: 11400000, guid: 43dc17fa5703420489ed0fa555d2f71c, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
