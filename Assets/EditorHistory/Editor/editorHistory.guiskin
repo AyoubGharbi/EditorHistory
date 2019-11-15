@@ -1356,15 +1356,15 @@ MonoBehaviour:
   m_CustomStyles:
   - m_Name: InteractableButton
     m_Normal:
-      m_Background: {fileID: 2800000, guid: 9cdfe4ec193c22441a1fcb257a02b741, type: 3}
+      m_Background: {fileID: 2800000, guid: 56bee8485655f5c45847b32259382455, type: 3}
       m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 0.8039216}
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_Hover:
-      m_Background: {fileID: 0}
+      m_Background: {fileID: 10906, guid: 0000000000000000f000000000000000, type: 0}
       m_ScaledBackgrounds: []
       m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_Active:
-      m_Background: {fileID: 0}
+      m_Background: {fileID: 10906, guid: 0000000000000000f000000000000000, type: 0}
       m_ScaledBackgrounds: []
       m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_Focused:
@@ -1407,8 +1407,8 @@ MonoBehaviour:
       m_Right: 0
       m_Top: 0
       m_Bottom: 0
-    m_Font: {fileID: 0}
-    m_FontSize: 0
+    m_Font: {fileID: 12800000, guid: 645ae9d34b0b27940ae73b4fad0e9992, type: 3}
+    m_FontSize: 18
     m_FontStyle: 0
     m_Alignment: 0
     m_WordWrap: 0
