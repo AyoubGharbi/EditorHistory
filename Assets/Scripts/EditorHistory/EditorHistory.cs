@@ -9,7 +9,7 @@ public class EditorHistory
     private List<Object> _historyElements = new List<Object> ();
 
     public int HistorySize => _historyElements.Count;
-    public bool IsElementSelected (Object hElement) => _selectedHistoryObject == hElement ||
+    public bool IsElementSelected (Object hElement) => _selectedHistoryObject == hElement &&
         _historyElements.FindIndex (h => h == hElement) == _selectedHistoryIndex;
 
     public List<Object> HistoryElements => _historyElements;
@@ -26,6 +26,14 @@ public class EditorHistory
         }
     }
 
+    public void UpdateSelection (UnityEngine.Object hObject)
+    {
+        var index = _historyElements.FindIndex (el => el == hObject);
+
+        _selectedHistoryIndex = index;
+        _selectedHistoryObject = hObject;
+    }
+
     public void RemovehEelement (Object hElement)
     {
         if (!_historyElements.Contains (hElement))
@@ -34,7 +42,7 @@ public class EditorHistory
             return;
         }
 
-        var hIndex = _historyElements.FindIndex(h => h == hElement);
-        _historyElements.RemoveAt(hIndex);
+        var hIndex = _historyElements.FindIndex (h => h == hElement);
+        _historyElements.RemoveAt (hIndex);
     }
 }

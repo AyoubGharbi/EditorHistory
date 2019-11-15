@@ -54,6 +54,8 @@ public class EditorHistoryWindow : EditorWindow
 
         DrawHElement (activeObject);
 
+        UpdateHElement(activeObject);
+
         Repaint ();
     }
 
@@ -82,7 +84,13 @@ public class EditorHistoryWindow : EditorWindow
                 var hButtonStyle = _hWindowSkin.GetStyle ("InteractableButton");
 
                 if (IsClickingRect (hRect)) // ping it and remove it from the history list (just for testing atm)
-                    RemoveHElement (hObject);
+                    UpdateHElement (hObject);
+
+                if (_editorHistory.IsElementSelected (hObject))
+                {
+                    var hStyle = _hWindowSkin.customStyles[0].onHover.textColor;
+                    GUI.contentColor = hStyle;
+                }
 
                 GUIContent hContent = new GUIContent ();
                 hContent.image = AssetPreview.GetMiniThumbnail (hObject);
@@ -93,6 +101,8 @@ public class EditorHistoryWindow : EditorWindow
                 GUILayout.EndHorizontal ();
 
                 GUILayout.Space (15);
+
+                GUI.contentColor = Color.white;
             }
         }
     }
@@ -103,11 +113,13 @@ public class EditorHistoryWindow : EditorWindow
         Repaint (); // force repaint
     }
 
-    void RemoveHElement (UnityEngine.Object hObject)
+    void UpdateHElement (UnityEngine.Object hObject)
     {
         EditorGUIUtility.PingObject (hObject);
-        // _editorHistory.RemovehEelement (hObject);
-        // Repaint (); // force repaint
+
+        _editorHistory.UpdateSelection (hObject);
+
+        Repaint (); // force repaint
     }
 
     bool IsClickingRect (Rect rect)
