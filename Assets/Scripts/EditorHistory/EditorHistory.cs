@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EditorHistory
@@ -28,6 +29,8 @@ public class EditorHistory
 
     public void UpdateSelection (UnityEngine.Object hObject)
     {
+        if (hObject == null) return;
+
         var index = _historyElements.FindIndex (el => el == hObject);
 
         _selectedHistoryIndex = index;
@@ -43,6 +46,9 @@ public class EditorHistory
         }
 
         var hIndex = _historyElements.FindIndex (h => h == hElement);
+
         _historyElements.RemoveAt (hIndex);
+
+        UpdateSelection (_historyElements.Last ());
     }
 }

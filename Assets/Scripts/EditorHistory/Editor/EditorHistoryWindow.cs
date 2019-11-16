@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -54,7 +53,7 @@ public class EditorHistoryWindow : EditorWindow
 
         DrawHElement (activeObject);
 
-        UpdateHElement(activeObject);
+        UpdateHElement (activeObject);
 
         Repaint ();
     }
@@ -83,13 +82,18 @@ public class EditorHistoryWindow : EditorWindow
                 var hObject = _editorHistory.HistoryElements[h];
                 var hButtonStyle = _hWindowSkin.GetStyle ("InteractableButton");
 
-                if (IsClickingRect (hRect)) // ping it and remove it from the history list (just for testing atm)
-                    UpdateHElement (hObject);
-
                 if (_editorHistory.IsElementSelected (hObject))
                 {
                     var hStyle = _hWindowSkin.customStyles[0].onHover.textColor;
                     GUI.contentColor = hStyle;
+                }
+
+                if (IsClickingRect (hRect, out var mouseId)) // ping it and remove it from the history list (just for testing atm)
+                {
+                    if (mouseId == 0)
+                        UpdateHElement (hObject);
+                    else if (mouseId == 1)
+                        RemoveHElement (hObject);
                 }
 
                 GUIContent hContent = new GUIContent ();
@@ -107,6 +111,12 @@ public class EditorHistoryWindow : EditorWindow
         }
     }
 
+    private void RemoveHElement (UnityEngine.Object hObject)
+    {
+        _editorHistory.RemovehEelement (hObject);
+        Repaint (); // force repaint
+    }
+
     void DrawHElement (UnityEngine.Object hObject)
     {
         _editorHistory.AddhEelement (hObject);
@@ -116,22 +126,23 @@ public class EditorHistoryWindow : EditorWindow
     void UpdateHElement (UnityEngine.Object hObject)
     {
         EditorGUIUtility.PingObject (hObject);
-
         _editorHistory.UpdateSelection (hObject);
-
         Repaint (); // force repaint
     }
 
-    bool IsClickingRect (Rect rect)
+    bool IsClickingRect (Rect rect, out int mouseId)
     {
         var currentEvent = Event.current;
 
         switch (currentEvent.type)
         {
             case EventType.MouseDown:
+                mouseId = currentEvent.button;
                 return rect.Contains (currentEvent.mousePosition);
-        }
 
-        return false;
+            default:
+                mouseId = -1;
+                return false;
+        }
     }
 }
