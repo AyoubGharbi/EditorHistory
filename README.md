@@ -9,4 +9,4 @@ Being able to see your previous history actions in Unity Editor! (Work In Progre
 
 * EditorHistory Preview
 
-    ![](preview.png)
+    ![](EditorHistoryPreview.gif)

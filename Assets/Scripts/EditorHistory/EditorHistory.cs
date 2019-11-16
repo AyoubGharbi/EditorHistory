@@ -10,10 +10,9 @@ public class EditorHistory
     private List<Object> _historyElements = new List<Object> ();
 
     public int HistorySize => _historyElements.Count;
+    public Object HistoryElementFromIndex (int index) => _historyElements[index];
     public bool IsElementSelected (Object hElement) => _selectedHistoryObject == hElement &&
-        _historyElements.FindIndex (h => h == hElement) == _selectedHistoryIndex;
-
-    public List<Object> HistoryElements => _historyElements;
+        _historyElements.IndexOf (hElement) == _selectedHistoryIndex;
 
     public void AddhEelement (Object hElement)
     {
@@ -31,7 +30,7 @@ public class EditorHistory
     {
         if (hObject == null) return;
 
-        var index = _historyElements.FindIndex (el => el == hObject);
+        var index = _historyElements.IndexOf (hObject);
 
         _selectedHistoryIndex = index;
         _selectedHistoryObject = hObject;
@@ -45,7 +44,7 @@ public class EditorHistory
             return;
         }
 
-        var hIndex = _historyElements.FindIndex (h => h == hElement);
+        var hIndex = _historyElements.IndexOf (hElement);
 
         _historyElements.RemoveAt (hIndex);
 

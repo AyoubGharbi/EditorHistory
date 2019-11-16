@@ -79,7 +79,7 @@ public class EditorHistoryWindow : EditorWindow
             for (int h = 0; h < _editorHistory.HistorySize; h++)
             {
                 var hRect = EditorGUILayout.BeginHorizontal ();
-                var hObject = _editorHistory.HistoryElements[h];
+                var hObject = _editorHistory.HistoryElementFromIndex (h);
                 var hButtonStyle = _hWindowSkin.GetStyle ("InteractableButton");
 
                 if (_editorHistory.IsElementSelected (hObject))
