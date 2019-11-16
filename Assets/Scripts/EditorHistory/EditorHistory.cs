@@ -49,6 +49,7 @@ public class EditorHistory
 
         _historyElements.RemoveAt (hIndex);
 
-        UpdateSelection (_historyElements.Last ());
+        if (HistorySize > 0)
+            UpdateSelection (_historyElements.Last ());
     }
 }
