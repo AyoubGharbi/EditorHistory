@@ -14,8 +14,9 @@ public static class ExportPackage
             "Assets/Fonts",
             "Assets/Scenes",
             "Assets/Scripts",
-            "Assets/Materials",
             "Assets/Textures",
+            "Assets/Materials",
+            "Assets/EditorHistory",
         };
 
         var executableName = string.Format ("EditorHistory_{0}.unitypackage", System.DateTime.Now.ToString ("yyyy-MM-dd_hh-mm-ss"));

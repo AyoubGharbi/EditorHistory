@@ -8,11 +8,14 @@ public class EditorHistory
     private int _selectedHistoryIndex = -1;
     private Object _selectedHistoryObject = null;
     private List<Object> _historyElements = new List<Object> ();
+    private List<Object> _historyFavorites = new List<Object> ();
 
     public int HistorySize => _historyElements.Count;
     public Object HistoryElementFromIndex (int index) => _historyElements[index];
     public bool IsElementSelected (Object hElement) => _selectedHistoryObject == hElement &&
         _historyElements.IndexOf (hElement) == _selectedHistoryIndex;
+
+    public bool IsHistoryFavorite (Object hElement) => _historyFavorites.IndexOf (hElement) != -1;
 
     public void AddhEelement (Object hElement)
     {
@@ -23,6 +26,18 @@ public class EditorHistory
         else
         {
             Debug.LogFormat ("{0} exists already!", hElement.name);
+        }
+    }
+
+    public void AddFavEelement (Object favElement)
+    {
+        if (!_historyFavorites.Contains (favElement))
+        {
+            _historyFavorites.Add (favElement);
+        }
+        else
+        {
+            Debug.LogFormat ("{0} exists already!", favElement.name);
         }
     }
 

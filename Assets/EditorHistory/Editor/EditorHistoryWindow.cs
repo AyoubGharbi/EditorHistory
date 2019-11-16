@@ -14,8 +14,11 @@ public class EditorHistoryWindow : EditorWindow
             utility : false, "Editor History", focus : true);
     }
 
-    public GUISkin _hInfoSkin;
-    public GUISkin _hWindowSkin;
+    public GUISkin _hInfoSkin = null;
+    public GUISkin _hWindowSkin = null;
+
+    public Texture2D FavoriteActiveIcon;
+    public Texture2D FavoriteInActiveIcon;
 
     private EditorHistory _editorHistory = new EditorHistory ();
 
@@ -85,8 +88,11 @@ public class EditorHistoryWindow : EditorWindow
                 if (_editorHistory.IsElementSelected (hObject))
                 {
                     var hStyle = _hWindowSkin.customStyles[0].onHover.textColor;
-                    GUI.contentColor = hStyle;
+                    GUI.color = hStyle;
                 }
+
+                Texture2D _finalFavoriteState = null;
+                _finalFavoriteState = _editorHistory.IsHistoryFavorite (hObject) ? FavoriteActiveIcon : FavoriteInActiveIcon;
 
                 if (IsClickingRect (hRect, out var mouseId)) // ping it and remove it from the history list (just for testing atm)
                 {
@@ -96,17 +102,29 @@ public class EditorHistoryWindow : EditorWindow
                         RemoveHElement (hObject);
                 }
 
-                GUIContent hContent = new GUIContent ();
-                hContent.image = AssetPreview.GetMiniThumbnail (hObject);
-                hContent.text = hObject.name;
+                // background
+                GUI.Label (hRect, new GUIContent (), hButtonStyle);
 
-                GUILayout.Label (hContent, hButtonStyle);
+                GUIContent hContent = new GUIContent (hObject.name, AssetPreview.GetMiniThumbnail (hObject));
+
+                GUILayout.Label (hContent);
+
+                var favRect = new Rect (hRect.x + hRect.width - 32, hRect.y - hRect.height / 2 - 32, 32, 32);
+
+                if (IsClickingRect (favRect, out var Id))
+                {
+                    _editorHistory.AddFavEelement (hObject);
+                    Repaint();
+                }
+
+                GUI.Label (favRect, _finalFavoriteState);
+                Debug.Log ("Draw Number : " + h);
 
                 GUILayout.EndHorizontal ();
 
                 GUILayout.Space (15);
 
-                GUI.contentColor = Color.white;
+                GUI.color = Color.white;
             }
         }
     }
