@@ -17,3 +17,4 @@ Instructions:
  - Selecting any object on the scene hiearchy or the project hiearchy will add it to the history tab.
  - Left clicking on a history item will highlight it.
  - Right clicking will delete it from the history tab.
+ - Mark history's element as favorite.
