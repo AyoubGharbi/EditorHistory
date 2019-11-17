@@ -22,6 +22,6 @@ public static class ExportPackage
         var executableName = string.Format ("EditorHistory_{0}.unitypackage", System.DateTime.Now.ToString ("yyyy-MM-dd_hh-mm-ss"));
         var executablePath = string.Format ("{0}{1}", _packageBasePath, executableName);
 
-        AssetDatabase.ExportPackage (projectContent, executablePath,ExportPackageOptions.Interactive | ExportPackageOptions.Recurse);
+        AssetDatabase.ExportPackage (projectContent, executablePath, ExportPackageOptions.Interactive | ExportPackageOptions.Recurse);
     }
 }

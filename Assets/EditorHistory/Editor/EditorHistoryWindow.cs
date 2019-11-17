@@ -91,15 +91,28 @@ public class EditorHistoryWindow : EditorWindow
                     GUI.color = hStyle;
                 }
 
+                var favRect = new Rect (hRect.x + hRect.width - 32, hRect.y + 16, 32, 32); // favorites
                 Texture2D _finalFavoriteState = null;
                 _finalFavoriteState = _editorHistory.IsHistoryFavorite (hObject) ? FavoriteActiveIcon : FavoriteInActiveIcon;
-
-                if (IsClickingRect (hRect, out var mouseId)) // ping it and remove it from the history list (just for testing atm)
+                
+                if (IsClickingRect (favRect, out var Id))
                 {
-                    if (mouseId == 0)
-                        UpdateHElement (hObject);
-                    else if (mouseId == 1)
-                        RemoveHElement (hObject);
+                    if (Id == 0)
+                    {
+                        _editorHistory.AddFavEelement (hObject);
+                        Repaint ();
+                    }
+                }
+                else
+                {
+
+                    if (IsClickingRect (hRect, out var mouseId))
+                    {
+                        if (mouseId == 0)
+                            UpdateHElement (hObject);
+                        else if (mouseId == 1)
+                            RemoveHElement (hObject);
+                    }
                 }
 
                 // background
@@ -109,16 +122,7 @@ public class EditorHistoryWindow : EditorWindow
 
                 GUILayout.Label (hContent);
 
-                var favRect = new Rect (hRect.x + hRect.width - 32, hRect.y - hRect.height / 2 - 32, 32, 32);
-
-                if (IsClickingRect (favRect, out var Id))
-                {
-                    _editorHistory.AddFavEelement (hObject);
-                    Repaint();
-                }
-
                 GUI.Label (favRect, _finalFavoriteState);
-                Debug.Log ("Draw Number : " + h);
 
                 GUILayout.EndHorizontal ();
 
