@@ -19,6 +19,7 @@ public class EditorHistoryWindow : EditorWindow
 
     public Texture2D FavoriteActiveIcon;
     public Texture2D FavoriteInActiveIcon;
+    private Vector2 _scrollPos = Vector2.zero;
 
     private EditorHistory _editorHistory = new EditorHistory ();
 
@@ -39,13 +40,14 @@ public class EditorHistoryWindow : EditorWindow
         GUILayout.Space (15);
 
         var rect = EditorGUILayout.BeginVertical ();
+        _scrollPos = EditorGUILayout.BeginScrollView (_scrollPos);
 
         DrawHistory ();
 
+        EditorGUILayout.EndScrollView ();
         EditorGUILayout.EndVertical ();
 
         GUILayout.Space (15);
-
         EditorGUILayout.EndHorizontal ();
     }
 
@@ -81,8 +83,8 @@ public class EditorHistoryWindow : EditorWindow
         {
             for (int h = 0; h < _editorHistory.HistorySize; h++)
             {
-                var hRect = EditorGUILayout.BeginHorizontal ();
                 var hObject = _editorHistory.HistoryElementFromIndex (h);
+                var hRect = EditorGUILayout.BeginHorizontal ();
                 var hButtonStyle = _hWindowSkin.GetStyle ("InteractableButton");
 
                 if (_editorHistory.IsElementSelected (hObject))
@@ -94,42 +96,63 @@ public class EditorHistoryWindow : EditorWindow
                 var favRect = new Rect (hRect.x + hRect.width - 32, hRect.y + 16, 32, 32); // favorites
                 Texture2D _finalFavoriteState = null;
                 _finalFavoriteState = _editorHistory.IsHistoryFavorite (hObject) ? FavoriteActiveIcon : FavoriteInActiveIcon;
-                
-                if (IsClickingRect (favRect, out var Id))
-                {
-                    if (Id == 0)
-                    {
-                        _editorHistory.AddFavEelement (hObject);
-                        Repaint ();
-                    }
-                }
-                else
-                {
 
-                    if (IsClickingRect (hRect, out var mouseId))
-                    {
-                        if (mouseId == 0)
-                            UpdateHElement (hObject);
-                        else if (mouseId == 1)
-                            RemoveHElement (hObject);
-                    }
-                }
+                HandleInputs (favRect, hRect, hObject);
 
-                // background
+                // start element
+
                 GUI.Label (hRect, new GUIContent (), hButtonStyle);
 
                 GUIContent hContent = new GUIContent (hObject.name, AssetPreview.GetMiniThumbnail (hObject));
 
                 GUILayout.Label (hContent);
 
+                GUI.color = Color.white;
+
                 GUI.Label (favRect, _finalFavoriteState);
 
-                GUILayout.EndHorizontal ();
+                // finish element
 
-                GUILayout.Space (15);
+                EditorGUILayout.EndHorizontal ();
 
-                GUI.color = Color.white;
+                FavoriteSeparation (hObject);
             }
+        }
+    }
+
+    private void HandleInputs (Rect favrRect, Rect backRect, Object hElement)
+    {
+        if (IsClickingRect (favrRect, out var Id))
+        {
+            if (Id == 0)
+            {
+                _editorHistory.AddFavEelement (hElement);
+                Repaint ();
+            }
+        }
+        else
+        {
+
+            if (IsClickingRect (backRect, out var mouseId))
+            {
+                if (mouseId == 0)
+                    UpdateHElement (hElement);
+                else if (mouseId == 1)
+                    RemoveHElement (hElement);
+            }
+        }
+    }
+
+    private void FavoriteSeparation (Object hElement)
+    {
+        if (_editorHistory.IsLastFavElement (hElement))
+        {
+            GUILayout.HorizontalSlider (0, 0, 0);
+            GUILayout.Space (30);
+        }
+        else
+        {
+            GUILayout.Space (5);
         }
     }
 

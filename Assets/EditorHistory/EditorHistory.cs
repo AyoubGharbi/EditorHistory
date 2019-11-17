@@ -11,11 +11,20 @@ public class EditorHistory
     private List<Object> _historyFavorites = new List<Object> ();
 
     public int HistorySize => _historyElements.Count;
+    public int FavoriteSize => _historyFavorites.Count;
     public Object HistoryElementFromIndex (int index) => _historyElements[index];
     public bool IsElementSelected (Object hElement) => _selectedHistoryObject == hElement &&
         _historyElements.IndexOf (hElement) == _selectedHistoryIndex;
 
     public bool IsHistoryFavorite (Object hElement) => _historyFavorites.Contains (hElement);
+
+    public bool IsLastFavElement (Object hElement)
+    {
+        if (FavoriteSize > 0)
+            return hElement == _historyFavorites.Last ();
+
+        return false;
+    }
 
     public void AddhEelement (Object hElement)
     {
@@ -73,7 +82,7 @@ public class EditorHistory
         var tempList = new List<Object> ();
         var favElements = _historyElements.FindAll (h => IsHistoryFavorite (h));
         var nonFavElements = _historyElements.Except (favElements);
-        
+
         tempList.AddRange (favElements);
         tempList.AddRange (nonFavElements);
 
