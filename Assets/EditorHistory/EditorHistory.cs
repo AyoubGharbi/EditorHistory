@@ -15,7 +15,7 @@ public class EditorHistory
     public bool IsElementSelected (Object hElement) => _selectedHistoryObject == hElement &&
         _historyElements.IndexOf (hElement) == _selectedHistoryIndex;
 
-    public bool IsHistoryFavorite (Object hElement) => _historyFavorites.IndexOf (hElement) != -1;
+    public bool IsHistoryFavorite (Object hElement) => _historyFavorites.Contains (hElement);
 
     public void AddhEelement (Object hElement)
     {
@@ -34,6 +34,7 @@ public class EditorHistory
         if (!_historyFavorites.Contains (favElement))
         {
             _historyFavorites.Add (favElement);
+            OrderByFavoriteState ();
         }
         else
         {
@@ -65,5 +66,17 @@ public class EditorHistory
 
         if (HistorySize > 0)
             UpdateSelection (_historyElements.Last ());
+    }
+
+    void OrderByFavoriteState ()
+    {
+        var tempList = new List<Object> ();
+        var favElements = _historyElements.FindAll (h => IsHistoryFavorite (h));
+        var nonFavElements = _historyElements.Except (favElements);
+        
+        tempList.AddRange (favElements);
+        tempList.AddRange (nonFavElements);
+
+        _historyElements = tempList;
     }
 }
