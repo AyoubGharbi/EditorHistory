@@ -75,6 +75,22 @@ public class EditorHistory
 
         if (HistorySize > 0)
             UpdateSelection (_historyElements.Last ());
+
+        // favorite 
+        RemoveFElement (hElement);
+    }
+
+    void RemoveFElement (Object hObject)
+    {
+        if (!_historyFavorites.Contains (hObject))
+        {
+            Debug.LogFormat ("can't remove {0}..", hObject.name);
+            return;
+        }
+
+        var hIndex = _historyFavorites.IndexOf (hObject);
+
+        _historyFavorites.RemoveAt (hIndex);
     }
 
     void OrderByFavoriteState ()
