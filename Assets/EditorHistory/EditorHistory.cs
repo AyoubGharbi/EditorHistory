@@ -80,7 +80,7 @@ public class EditorHistory
         RemoveFElement (hElement);
     }
 
-    void RemoveFElement (Object hObject)
+    public void RemoveFElement (Object hObject)
     {
         if (!_historyFavorites.Contains (hObject))
         {
@@ -91,6 +91,8 @@ public class EditorHistory
         var hIndex = _historyFavorites.IndexOf (hObject);
 
         _historyFavorites.RemoveAt (hIndex);
+
+        OrderByFavoriteState ();
     }
 
     void OrderByFavoriteState ()

@@ -126,8 +126,10 @@ public class EditorHistoryWindow : EditorWindow
         {
             if (Id == 0)
             {
-                _editorHistory.AddFavEelement (hElement);
-                Repaint ();
+                if (_editorHistory.IsHistoryFavorite (hElement))
+                    RemoveFElement (hElement);
+                else
+                    DrawFElement (hElement);
             }
         }
         else
@@ -162,10 +164,22 @@ public class EditorHistoryWindow : EditorWindow
         Repaint (); // force repaint
     }
 
+    private void RemoveFElement (UnityEngine.Object hObject)
+    {
+        _editorHistory.RemoveFElement (hObject);
+        Repaint (); // force repaint
+    }
+
     void DrawHElement (UnityEngine.Object hObject)
     {
         _editorHistory.AddhEelement (hObject);
         Repaint (); // force repaint
+    }
+
+    void DrawFElement (UnityEngine.Object hObject)
+    {
+        _editorHistory.AddFavEelement (hObject);
+        Repaint ();
     }
 
     void UpdateHElement (UnityEngine.Object hObject)
