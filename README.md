@@ -1,5 +1,5 @@
 # EditorHistory
-Being able to see your previous history actions in Unity Editor! (Work In Progress)
+Being able to see your previous actions in Unity Editor! (Work In Progress)
 
 * Fonts Used 
   - Cascadia Code :
